@@ -36,11 +36,27 @@ WHERE Trained_In.CertificationExpires < Procedure.Date
 );
 
 -- 8.5 Obtain the information for appointments where a patient met with a physician other than his/her primary care physician. Show the following information: Patient name, physician name, nurse name (if any), start and end time of appointment, examination room, and the name of the patient's primary care physician.
-
+SELECT  Patient.Name, Physician.name, Nurse.name, Undergoes.Date, Stay.start, Stay.end, Stay.room FROM Patient
+JOIN Physician ON Physician.EmployeeID = Patient.PCP
+JOIN Undergoes ON Undergoes.patient = Patient.SSN
+JOIN Stay ON Stay.patient = Patient.SSN
+JOIN Room ON Room.Number = Stay.room
+JOIN Nurse ON Nurse.EmployeeID = Undergones.AssistingNurse;
 
 -- 8.6 The Patient field in Undergoes is redundant, since we can obtain it from the Stay table. There are no constraints in force to prevent inconsistencies between these two tables. More specifically, the Undergoes table may include a row where the patient ID does not match the one we would obtain from the Stay table through the Undergoes.Stay foreign key. Select all rows from Undergoes that exhibit this inconsistency.
+
 -- 8.7 Obtain the names of all the nurses who have ever been on call for room 123.
+SELECT Nurse.Name FROM Nurse
+JOIN On_Call ON Nurse.EmployeeID = On_Call.Nurse
+JOIN Block ON On_Call.BlockCode = Block.Code
+JOIN Room Room.BlockCode = Block.Code
+WHERE Room.Number = 123;
+
 -- 8.8 The hospital has several examination rooms where appointments take place. Obtain the number of appointments that have taken place in each examination room.
+SELECT Appointment.ExaminationRoom, Count(Prescribes.Date) FROM Appointment
+JOIN Prescribes ON Appointment.AppointmentID = Prescribes.Date
+ORDER BY Appointment.ExaminationRoom;
+
 -- 8.9 Obtain the names of all patients (also include, for each patient, the name of the patient's primary care physician), such that \emph{all} the following are true:
     -- The patient has been prescribed some medication by his/her primary care physician.
     -- The patient has undergone a procedure with a cost larger that $5,000
