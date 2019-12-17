@@ -7,10 +7,6 @@ JOIN AssignedTo ON AssignedTo.Scientist = Scientists.SSN
 JOIN Projects ON Projects.Code = AssignedTo.Project
 ORDER By Projects.Name ASC, Scientists.Name ASC;
 
-
-
 -- 6.2 Select the project names which are not assigned yet
-
-SELECT Name
-FROM Projects
+SELECT Name FROM Projects
 WHERE Code NOT In (SELECT Project FROM AssignedTo);

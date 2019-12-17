@@ -8,3 +8,4 @@ LEFT JOIN (SELECT id, address FROM ADDRESS GROUP BY id)
     SELECT PEOPLE.id, PEOPLE.Name, ADDRESS.address FROM PEOPLE
     LEFT JOIN (SELECT id, address, updatedate FROM ADDRESS GROUP BY updatedate)
       ON PEOPLE.id = ADDRESS.id
+ 

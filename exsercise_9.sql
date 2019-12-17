@@ -29,8 +29,24 @@ SELECT TEMP.country FROM
     GROUP BY country) AS TEMP
 WHERE TEMP.downloads > (SELECT COUNT(*)  FROM cran_logs_2015_01_01
                         WHERE  country = 'CN');
+
 -- 9.9 Print the average length of the package name of all the UNIQUE packages
+SELECT AVG(LENGTH(temp.packages))
+FROM (SELECT DISTINCT package as packages FROM cran_logs_2015_01_01);
+
 -- 9.10 Get the package whose downloading count ranks 2nd (print package name and it's download count).
+SELECT package, count(*) FROM
+(SELECT package, count(*) FROM cran_logs_2015_01_01
+GROUP By package
+ORDER By Count(*) desc
+LIMIT 2)
+ORDER By count(*) ASC Limit 1;
+
 -- 9.11 Print the name of the package whose download count is bigger than 1000.
+SELECT package  FROM cran_logs_2015_01_01
+GROUP BY package HAVING count(*)> 1000;
+
 -- 9.12 The field "r_os" is the operating system of the users.
     -- 	Here we would like to know what main system we have (ignore version number), the relevant counts, and the proportion (in percentage).
+SELECT SUBSTRING(r_os, 1, 5) FROM cran_logs_2015_01_01
+GROUP BY SUBSTRING(r_os, 1, 5);
